@@ -1,0 +1,30 @@
+{
+  "description": "FORMAT EXAMPLE ONLY. These 'studies' are invented to show the file structure and let the pipeline run. They are not real papers or results. Replace them with your own coding of published studies.",
+  "coding_rules": {
+    "extensive": 0.6,
+    "partial": 0.2
+  },
+  "circuits": {
+    "spatial": ["CA1", "CA3", "DG", "ENTl", "ENTm", "SUBd", "SUBv", "RSPagl", "RSPd", "RSPv", "PRE", "POST", "PAR"],
+    "recognition": ["PERI", "ECT", "ENTl", "CA1", "PL", "ILA"],
+    "motor": ["MOp", "MOs", "CP", "VAL"]
+  },
+  "studies": [
+    {"id": "ex01", "paper": "Example A", "model": "dMCAO", "test": "Barnes maze", "circuit": "spatial",
+     "lesion": {"SSp-bfd": "extensive", "SSp-ul": "partial", "SSs": "partial"}, "deficit": 0},
+    {"id": "ex02", "paper": "Example A", "model": "dMCAO", "test": "NOR", "circuit": "recognition",
+     "lesion": {"SSp-bfd": "extensive", "SSp-ul": "partial", "SSs": "partial"}, "deficit": 0},
+    {"id": "ex03", "paper": "Example B", "model": "tMCAO", "test": "Water maze", "circuit": "spatial",
+     "lesion": {"CP": "extensive", "SSs": "extensive", "AId": "partial", "TEa": "partial", "CA1": "partial"}, "deficit": 1},
+    {"id": "ex04", "paper": "Example C", "model": "tMCAO", "test": "NOR", "circuit": "recognition",
+     "lesion": {"CP": "extensive", "SSs": "partial", "AIp": "partial", "TEa": "extensive"}, "deficit": 1},
+    {"id": "ex05", "paper": "Example D", "model": "Photothrombosis", "test": "Barnes maze", "circuit": "spatial",
+     "lesion": {"MOp": "extensive", "MOs": "partial"}, "deficit": 0},
+    {"id": "ex06", "paper": "Example E", "model": "tMCAO", "test": "Barnes maze", "circuit": "spatial",
+     "lesion": {"CP": "extensive", "SSp-ul": "partial", "VPM": "partial", "VPL": "partial", "CA1": "partial"}, "deficit": 1},
+    {"id": "ex07", "paper": "Example F", "model": "Hippocampal ET-1", "test": "Water maze", "circuit": "spatial",
+     "lesion": {"CA1": "extensive", "CA3": "partial", "DG": "partial"}, "deficit": 1},
+    {"id": "ex08", "paper": "Example G", "model": "dMCAO", "test": "NOR", "circuit": "recognition",
+     "lesion": {"SSp-bfd": "partial", "SSp-ll": "partial"}, "deficit": 0}
+  ]
+}

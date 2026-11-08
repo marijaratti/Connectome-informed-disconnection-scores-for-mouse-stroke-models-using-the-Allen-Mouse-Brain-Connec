@@ -1,0 +1,19 @@
+{
+  "description": "Illustrative lesion extents (fraction of each region damaged) for the three stroke models in Brezzo et al. (2025, J Cereb Blood Flow Metab). Based on the paper's histology summary (dMCAO and dMCAO + hypoxia: cortical, ~12% of the hemisphere; tMCAO: larger, cortex + striatum, with more hippocampal and thalamic involvement) and typical model territories. These are assumptions, not measured values. Replace them with region-by-region histology for a real analysis.",
+  "lesions": {
+    "dMCAO": {"SSp-bfd": 0.6, "SSp-ul": 0.4, "SSp-ll": 0.3, "SSp-tr": 0.3,
+              "SSs": 0.3, "MOp": 0.2, "PTLp": 0.2},
+    "dMCAO + hypoxia": {"SSp-bfd": 0.7, "SSp-ul": 0.5, "SSp-ll": 0.4, "SSp-tr": 0.4,
+                        "SSs": 0.4, "MOp": 0.25, "PTLp": 0.3, "CA1": 0.05},
+    "tMCAO": {"CP": 0.7, "SSp-bfd": 0.5, "SSp-ul": 0.4, "SSs": 0.6, "MOp": 0.3,
+              "AId": 0.4, "AIp": 0.4, "GU": 0.5, "AUDp": 0.3, "AUDd": 0.3,
+              "TEa": 0.3, "CA1": 0.1, "VPM": 0.1, "VPL": 0.1}
+  },
+  "circuits": {
+    "Spatial (Barnes / water maze)": ["CA1", "CA3", "DG", "ENTl", "ENTm", "SUBd", "SUBv",
+                                      "RSPagl", "RSPd", "RSPv", "PRE", "POST", "PAR"],
+    "Recognition (NOR)": ["PERI", "ECT", "ENTl", "CA1", "PL", "ILA"],
+    "Motor": ["MOp", "MOs", "CP", "VAL"]
+  },
+  "contributors_circuit": "Spatial (Barnes / water maze)"
+}
