@@ -1,0 +1,58 @@
+"""Connectome-informed lesion scores for a small sample of mouse post-stroke cognition studies.
+
+Usage: python3 -I multi_study_scores.py <W_ipsi.csv> <study_coding.json> <out_dir>
+"""
+import sys, json
+import numpy as np
+import pandas as pd
+from scipy import stats
+
+W = pd.read_csv(sys.argv[1], index_col=0).astype(float)
+W.values[np.diag_indices_from(W)] = 0.0
+cfg = json.load(open(sys.argv[2]))
+out = sys.argv[3]
+levels = {"extensive": cfg["coding_rules"]["extensive"], "partial": cfg["coding_rules"]["partial"]}
+circuits = cfg["circuits"]
+
+for c in circuits.values():
+    for r in c:
+        assert r in W.index, r
+
+
+def scores(f, circ):
+    direct = float(f[circ].mean())
+    others = [r for r in W.index if r not in circ]
+    conn = W.loc[others, circ].sum(axis=1) + W.loc[circ, others].sum(axis=0)
+    network = float((conn * f[others]).sum() / conn.sum())
+    return direct, network
+
+rows = []
+for s in cfg["studies"]:
+    f = pd.Series(0.0, index=W.index)
+    for r, lvl in s["lesion"].items():
+        assert r in W.index, r
+        f[r] = levels[lvl]
+    d, n = scores(f, circuits[s["circuit"]])
+    md, mn = scores(f, circuits["motor"])
+    rows.append({"id": s["id"], "paper": s["paper"], "model": s["model"], "test": s["test"],
+                 "circuit": s["circuit"], "deficit": s["deficit"],
+                 "direct_damage": d, "network_disconnection": n,
+                 "cognitive_score": d + n, "motor_score": md + mn})
+
+df = pd.DataFrame(rows)
+df.to_csv(f"{out}/multi_study_scores.csv", index=False)
+
+pd.set_option("display.width", 200)
+print(df[["id", "deficit", "direct_damage", "network_disconnection", "cognitive_score", "motor_score"]].round(3).to_string(index=False))
+print()
+for col in ["cognitive_score", "network_disconnection", "direct_damage", "motor_score"]:
+    a = df.loc[df.deficit == 1, col]; b = df.loc[df.deficit == 0, col]
+    u = stats.mannwhitneyu(a, b, alternative="two-sided")
+    r = stats.pointbiserialr(df.deficit, df[col])
+    print(f"{col:24s} deficit mean={a.mean():.3f} (n={len(a)})  no-deficit mean={b.mean():.3f} (n={len(b)})  "
+          f"MWU p={u.pvalue:.3f}  r_pb={r.statistic:.2f}")
+
+# Study-level sensitivity: one row per paper (first listed), to reduce non-independence
+first = df.groupby("paper", sort=False).head(1)
+a = first.loc[first.deficit == 1, "cognitive_score"]; b = first.loc[first.deficit == 0, "cognitive_score"]
+print(f"\nOne row per paper: n={len(first)}; deficit n={len(a)}, none n={len(b)}")
